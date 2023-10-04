@@ -13,3 +13,4 @@ Route::get("/create_invoice", [\App\Http\Controllers\InvoiceController::class, '
 Route::get("/customers", [\App\Http\Controllers\CustomerController::class, 'get_all_customers']);
 Route::get("/products", [\App\Http\Controllers\ProductController::class, 'get_all_products']);
 Route::post("/add_invoice", [\App\Http\Controllers\InvoiceController::class, 'add_invoice']);
+Route::get('/show_invoice/{id}', [\App\Http\Controllers\InvoiceController::class, 'show_invoice']);
