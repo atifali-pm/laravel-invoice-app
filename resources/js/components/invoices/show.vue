@@ -1,29 +1,42 @@
 <script setup>
 import {onMounted, ref} from "vue";
+import {useRouter} from "vue-router";
 
-    let form = ref({ id: ''})
+const router = useRouter()
 
-    const props = defineProps({
-        id: {
-            type: String,
-            default: ''
-        }
-    })
+let form = ref({id: ''})
 
-    onMounted(async () => {
-        getInvoice()
-    })
-
-    const getInvoice = async () => {
-        let response = await axios.get(`/api/show_invoice/${props.id}`)
-        console.log(response.data.invoice)
-        form.value = response.data.invoice;
+const props = defineProps({
+    id: {
+        type: String,
+        default: ''
     }
+})
 
-    const print = () => {
-        window.print()
-        router.push('/').catch(() => {})
-    }
+onMounted(async () => {
+    getInvoice()
+})
+
+const getInvoice = async () => {
+    let response = await axios.get(`/api/invoice/${props.id}`)
+    console.log(response.data.invoice)
+    form.value = response.data.invoice;
+}
+
+const print = () => {
+    window.print()
+    router.push('/').catch(() => {
+    })
+}
+
+const onEdit = (id) => {
+    router.push('/invoice/edit/' + id);
+}
+
+const deleteInvoice = async (id) => {
+    axios.delete('/api/invoice/' + id)
+    router.push('/')
+}
 
 
 </script>
@@ -46,7 +59,7 @@ import {onMounted, ref} from "vue";
                 </div>
 
                 <div>
-                    <ul  class="card__header-list">
+                    <ul class="card__header-list">
                         <li>
                             <!-- Select Btn Option -->
                             <button class="selectBtnFlat" @click="print()">
@@ -57,7 +70,7 @@ import {onMounted, ref} from "vue";
                         </li>
                         <li>
                             <!-- Select Btn Option -->
-                            <button class="selectBtnFlat">
+                            <button class="selectBtnFlat" @click="onEdit(form.id)">
                                 <i class=" fas fa-reply"></i>
                                 Edit
                             </button>
@@ -65,7 +78,7 @@ import {onMounted, ref} from "vue";
                         </li>
                         <li>
                             <!-- Select Btn Option -->
-                            <button class="selectBtnFlat ">
+                            <button class="selectBtnFlat " @click="deleteInvoice(form.id)">
                                 <i class=" fas fa-pencil-alt"></i>
                                 Delete
                             </button>
@@ -125,7 +138,7 @@ import {onMounted, ref} from "vue";
 
                     <!-- item 1 -->
                     <div class="table--items3" v-for="(item, i) in form.invoice_items" :key="item.id">
-                        <p>{{ i+1 }}</p>
+                        <p>{{ i + 1 }}</p>
                         <p>{{ item.product.description }}</p>
                         <p>$ {{ item.unit_price }}</p>
                         <p>{{ item.quantity }}</p>
@@ -133,7 +146,7 @@ import {onMounted, ref} from "vue";
                     </div>
                 </div>
 
-                <div  class="invoice__subtotal">
+                <div class="invoice__subtotal">
                     <div>
                         <h2>Thank you for your business</h2>
                     </div>
@@ -153,10 +166,10 @@ import {onMounted, ref} from "vue";
                 <div class="invoice__total">
                     <div>
                         <h2>Terms and Conditions</h2>
-                        <p>{{ form.terms_and_description }}</p>
+                        <p>{{ form.terms_and_conditions }}</p>
                     </div>
                     <div>
-                        <div class="grand__total" >
+                        <div class="grand__total">
                             <div class="grand__total--items">
                                 <p>Grand Total</p>
                                 <span>$ {{ form.total }}</span>
