@@ -436,9 +436,9 @@ ul {
 }
 
 .logo {
-    padding-top:40px;
+    padding-top:20px;
     padding-left:25px;
-    height: 60px;
+    height: 20px;
     padding-bottom: 15px;
 }
 
@@ -446,7 +446,7 @@ ul {
     background-color: #fca120;
     display: grid;
     grid-template-columns: 65% 1fr 1fr;
-    margin-top: 80px;
+    margin-top: 40px;
 }
 
 .invoice__header--title-1 {
